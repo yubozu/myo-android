@@ -1,0 +1,56 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:textColor="@drawable/edit_text_selector"
+        android:hint="姓名"/>
+
+    <EditText
+        android:id="@+id/et_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:textColor="@drawable/edit_text_selector"
+        android:hint="性别"/>
+
+    <EditText
+        android:id="@+id/et_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:textColor="@drawable/edit_text_selector"
+        android:hint="年龄"/>
+
+    <EditText
+        android:id="@+id/et_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@drawable/edit_text_selector"
+        android:hint="住院编号"/>
+
+    <EditText
+        android:id="@+id/et_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="4"
+        android:maxLines="4"
+        android:textColor="@drawable/edit_text_selector"
+        android:gravity="start"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideInset"
+        android:hint="请输入患者的诊断信息" />
+
+    </LinearLayout>
+</FrameLayout>
