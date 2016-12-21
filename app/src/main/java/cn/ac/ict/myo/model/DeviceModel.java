@@ -1,9 +1,11 @@
-package cn.ac.ict.myo;
+package cn.ac.ict.myo.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+
+import cn.ac.ict.myo.MyoApp;
 
 /**
  * Author: saukymo

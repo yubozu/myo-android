@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.ac.ict.myo.model.DeviceModel;
 
 /**
  * Author: saukymo
@@ -115,7 +116,8 @@ public class PatientDetail extends Activity {
     }
 
     private void init() {
-        URL = getString(R.string.default_url);
+//        URL = getString(R.string.default_url)
+        URL = "http://192.168.0.105";
         try {
             mSocket = IO.socket(URL);
             mSocket.connect();

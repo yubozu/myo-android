@@ -2,7 +2,6 @@
     <string name="app_name">Myo</string>
     <string name="status_tips">Status:</string>
     <string name="url_tips">URL:</string>
-    <string name="default_url">http://192.168.0.105</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
 </resources>

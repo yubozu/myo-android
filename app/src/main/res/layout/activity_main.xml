@@ -9,27 +9,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="cn.ac.ict.myo.MainActivity">
+    tools:context="cn.ac.ict.myo.activity.MainActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:text="@string/url_tips" />
-
-    <EditText
-        android:id="@+id/et_url"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textUri"
-        android:text="@string/default_url"/>
-
-    <Button
-        android:id="@+id/bt_socket"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="@string/start"/>
 
     <TextView
         android:id = "@+id/tv_emg"

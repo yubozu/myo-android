@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import cn.ac.ict.myo.model.DeviceModel;
 
 /**
  * Author: saukymo
@@ -28,7 +30,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 //    private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
         @BindView(R.id.et_name)
         public EditText name;
         @BindView(R.id.et_age)
@@ -47,20 +48,12 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         public Button cancel;
         @BindView(R.id.detail)
         public Button detail;
+        @BindView(R.id.card_view)
         public CardView cardView;
 
         public ViewHolder(View v) {
             super(v);
-            name = (EditText) v.findViewById(R.id.et_name);
-            age = (EditText) v.findViewById(R.id.et_age);
-            gender = (EditText) v.findViewById(R.id.et_gender);
-            id = (EditText) v.findViewById(R.id.et_id);
-            info = (EditText) v.findViewById(R.id.et_info);
-            save = (Button) v.findViewById(R.id.save);
-            edit = (Button) v.findViewById(R.id.edit);
-            cancel = (Button) v.findViewById(R.id.cancel);
-            detail = (Button) v.findViewById(R.id.detail);
-            cardView = (CardView) v.findViewById(R.id.card_view);
+            ButterKnife.bind(this, v);
 
            info.setOnKeyListener(new View.OnKeyListener() {
 
