@@ -21,6 +21,7 @@ import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -36,10 +37,9 @@ import cn.ac.ict.myo.model.DeviceModel;
 
 public class PatientDetail extends Activity {
     private String TAG = "PatientDetail";
+    private String appId = "test01";
     private Socket mSocket;
     private Integer deviceId;
-    @BindView(R.id.tv_emg)
-    public TextView tv_emg;
     private String URL;
     private ArrayList<String> emgData = new ArrayList<>();
     private ArrayList<ArrayList<Integer>> emg = new ArrayList<>();
@@ -58,6 +58,8 @@ public class PatientDetail extends Activity {
     public EditText id;
     @BindView(R.id.et_info)
     public EditText info;
+    @BindView(R.id.tv_emg)
+    public TextView tvEmg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,6 @@ public class PatientDetail extends Activity {
         setContentView(R.layout.activity_detail);
 
         ButterKnife.bind(this);
-
 
         ArrayList<Integer> ids = new ArrayList<Integer>() {{
             add(R.id.chart1);
@@ -117,10 +118,11 @@ public class PatientDetail extends Activity {
 
     private void init() {
 //        URL = getString(R.string.default_url)
-        URL = "http://192.168.0.105";
+        URL = "http://10.27.0.141:5000";
         try {
             mSocket = IO.socket(URL);
             mSocket.connect();
+            mSocket.emit("login", appId);
             mSocket.emit("subscribe", deviceId);
             Log.d(TAG, "Subscribed device: " + deviceId);
             mSocket.on("emg", onEmg);
@@ -137,8 +139,12 @@ public class PatientDetail extends Activity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    JSONArray data = (JSONArray) args[0];
+                    JSONObject receiveData = (JSONObject) args[0];
+
                     try {
+                        Double prob = receiveData.getDouble("proba");
+                        tvEmg.setText("probability: " + prob);
+                        JSONArray data = receiveData.getJSONArray("emg");
                         for (int i=0; i<data.length();i++) {
 //                            emg.get(i).add(data.getInt(i));
 //                            if (emg.get(i).size() > 10)
@@ -163,6 +169,7 @@ public class PatientDetail extends Activity {
                         }
                         index += 1;
                     } catch (JSONException e) {
+                        e.printStackTrace();
                         return;
                     }
                 }
@@ -184,17 +191,19 @@ public class PatientDetail extends Activity {
         return set;
     }
 
-    private void setText() {
-        StringBuilder sb = new StringBuilder();
-        for (String s: emgData) {
-            sb.append(s);
-            sb.append("\n");
-        }
-        tv_emg.setText(sb);
-    }
+//    private void setText() {
+//        StringBuilder sb = new StringBuilder();
+//        for (String s: emgData) {
+//            sb.append(s);
+//            sb.append("\n");
+//        }
+//        tv_emg.setText(sb);
+//    }
 
     public void onBackPressed() {
         mSocket.off("emg", onEmg);
+        mSocket.emit("unsubscribe", deviceId);
+        mSocket.emit("logout", appId);
         mSocket.disconnect();
         for (int i = 0; i < 8; i++) {
             mCharts.get(i).clear();

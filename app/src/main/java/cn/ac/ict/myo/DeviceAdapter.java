@@ -2,15 +2,14 @@ package cn.ac.ict.myo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,93 +26,32 @@ import cn.ac.ict.myo.model.DeviceModel;
 
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder>{
     private ArrayList<DeviceModel> mDataset;
-//    private Context mContext;
+    private View.OnClickListener mListener;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.et_name)
-        public EditText name;
-        @BindView(R.id.et_age)
-        public EditText age;
-        @BindView(R.id.et_gender)
-        public EditText gender;
-        @BindView(R.id.et_id)
-        public EditText id;
-        @BindView(R.id.et_info)
-        public EditText info;
-        @BindView(R.id.edit)
-        public Button edit;
-        @BindView(R.id.save)
-        public Button save;
-        @BindView(R.id.cancel)
-        public Button cancel;
-        @BindView(R.id.detail)
-        public Button detail;
-        @BindView(R.id.card_view)
-        public CardView cardView;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.rl)
+        public RelativeLayout rl;
+        @BindView(R.id.civ_gender)
+        public ImageView gender;
+        @BindView(R.id.tv_name)
+        public TextView name;
+        @BindView(R.id.tv_room_id)
+        public TextView room;
+        @BindView(R.id.tv_last_outbreak)
+        public TextView lastOutbreak;
+        @BindView(R.id.bt_view)
+        public ImageView view;
 
         public ViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
-
-           info.setOnKeyListener(new View.OnKeyListener() {
-
-                @Override
-                public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                    // if enter is pressed start calculating
-                    if (keyCode == KeyEvent.KEYCODE_ENTER
-                            && event.getAction() == KeyEvent.ACTION_UP) {
-
-                        // get EditText text
-                        String text = ((EditText) v).getText().toString();
-
-                        // find how many rows it cointains
-                        int editTextRowCount = text.split("\\n").length;
-
-                        // user has input more than limited - lets do something
-                        // about that
-                        if (editTextRowCount >= 4) {
-
-                            // find the last break
-                            int lastBreakIndex = text.lastIndexOf("\n");
-
-                            // compose new text
-                            String newText = text.substring(0, lastBreakIndex);
-
-                            // add new text - delete old one and append new one
-                            // (append because I want the cursor to be at the end)
-                            ((EditText) v).setText("");
-                            ((EditText) v).append(newText);
-
-                        }
-                    }
-
-                    return false;
-                }
-            });
-        }
-
-        public void setEnable(Boolean status) {
-            this.name.setEnabled(status);
-            this.age.setEnabled(status);
-            this.gender.setEnabled(status);
-            this.id.setEnabled(status);
-            if (status)
-                this.info.setVisibility(View.VISIBLE);
-            else
-                this.info.setVisibility(View.GONE);
-            this.info.setEnabled(status);
-            this.edit.setEnabled(!status);
-            this.save.setEnabled(status);
-            this.cancel.setEnabled(status);
-            this.detail.setEnabled(!status);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public DeviceAdapter(ArrayList<DeviceModel> myDataset) {
-//        mContext = context;
         mDataset = myDataset;
+        sortDataset();
     }
 
     // Create new views (invoked by the layout manager)
@@ -122,7 +60,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                                                    int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_device, parent, false);
+                .inflate(R.layout.item_patient, parent, false);
+//        v.setOnClickListener(mOnClickListener);
         return new ViewHolder(v);
     }
 
@@ -133,69 +72,40 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         // - replace the contents of the view with that element
         final DeviceModel device = mDataset.get(position);
         holder.name.setText(device.name);
-        holder.age.setText(device.age);
-        holder.gender.setText(device.gender);
-        holder.id.setText(device.id);
-        holder.info.setText(device.info);
-        if ((device.status != null) && device.status) {
-            holder.cardView.setBackgroundColor(MyoApp.getAppContext().getResources().getColor(R.color.alert));
-        } else {
-            holder.cardView.setBackgroundColor(MyoApp.getAppContext().getResources().getColor(R.color.normal));
-        }
-        holder.setEnable(false);
-
-        holder.edit.setOnClickListener(new View.OnClickListener() {
+        holder.rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.setEnable(true);
-            }
-        });
-
-        holder.save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                device.name = holder.name.getText().toString();
-                device.age = holder.age.getText().toString();
-                device.gender = holder.gender.getText().toString();
-                device.id = holder.id.getText().toString();
-                device.info = holder.info.getText().toString();
-                holder.setEnable(false);
-                device.saveToPref();
-                notifyDataSetChanged();
-            }
-        });
-
-        holder.cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                holder.setEnable(false);
-                notifyDataSetChanged();
-            }
-        });
-
-        holder.detail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("Adapter", "Jump to patient detail page");
                 Intent intent = new Intent(MyoApp.getAppContext(), PatientDetail.class);
-                Bundle b = new Bundle();
-                b.putInt("device_id", device.getDeviceId()); //Your id
-                intent.putExtras(b); //Put your id to your next Intent
+                Bundle bundle = new Bundle();
+                bundle.putInt("device_id", device.getDeviceId()); //Your id
+                intent.putExtras(bundle); //Put your id to your next Intent
                 MyoApp.getAppContext().startActivity(intent);
             }
         });
 
-    }
+        if (device.getGender() != null && device.getGender().equals("男")) {
+            holder.gender.setImageResource(R.drawable.male);
+        } else {
+            holder.gender.setImageResource(R.drawable.female);
+        }
 
-    public void setAlert(Integer deviceId, Boolean status) {
+        holder.room.setText("病房301-" + device.getDeviceId());
+        holder.lastOutbreak.setText("上次发作时间：30分钟前");
+//        holder.view.setOnClickListener();
+
+    }
+    private void sortDataset() {
         Collections.sort(mDataset, new Comparator<DeviceModel>() {
             @Override
-            public int compare(DeviceModel device2, DeviceModel device1)
+            public int compare(DeviceModel device1, DeviceModel device2)
             {
 
                 return  device1.deviceId.compareTo(device2.deviceId);
             }
         });
+    }
+    public void setAlert(Integer deviceId, Boolean status) {
+        sortDataset();
         for (DeviceModel device: mDataset) {
             if (device.deviceId.equals(deviceId)) {
                 device.setStatus(status);

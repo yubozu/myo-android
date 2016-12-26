@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="enable_text_color">#000000</color>
     <color name="disable_text_color">#222222</color>
-    <color name="alert">#FF7777</color>
+    <color name="female">#F44336</color>
     <color name="normal">#FFFFFF</color>
+    <color name="male">#2196F3</color>
 </resources>

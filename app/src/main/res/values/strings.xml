@@ -4,4 +4,6 @@
     <string name="url_tips">URL:</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
+    <string name="view">查看详情</string>
+    <string name="avatar">头像</string>
 </resources>

@@ -3,19 +3,19 @@ package cn.ac.ict.myo.activity;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.github.nkzawa.emitter.Emitter;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import cn.ac.ict.myo.DeviceAdapter;
-import cn.ac.ict.myo.model.DeviceModel;
 import cn.ac.ict.myo.R;
+import cn.ac.ict.myo.model.DeviceModel;
 import cn.ac.ict.myo.presenter.MainPresenter;
 import okhttp3.OkHttpClient;
 
@@ -56,22 +56,6 @@ public class MainActivity extends BaseActivity {
         mRecyclerView.swapAdapter(mAdapter, true);
     }
 
-    private Emitter.Listener onLogin = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-//                    tv_status.setText(emg);
-
-//                    mSocket.emit("subscribe", subscribeDeviceId);
-//                    tv_emg.setText(deviceList.toString());
-                }
-            });
-        }
-    };
-
     @Override
     protected void init() {
         mainPresenter = new MainPresenter(this);
@@ -79,6 +63,9 @@ public class MainActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new DeviceAdapter(new ArrayList<DeviceModel>());
         mRecyclerView.setAdapter(mAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                LinearLayout.VERTICAL);
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
         notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         r = RingtoneManager.getRingtone(getApplicationContext(), notification);
     }
@@ -86,19 +73,12 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onResume(){
         super.onResume();
-//        this.onClick(findViewById(R.id.bt_socket));
         mainPresenter.connect();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-//        if (socket) {
-//            mSocket.emit("logout", app_id);
-//            mSocket.off("alert");
-//            mSocket.off("login");
-//            mSocket.disconnect();
-//        }
         mainPresenter.disconnect();
         if (r.isPlaying()) {
             r.stop();
