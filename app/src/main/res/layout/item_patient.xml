@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl"
+    android:id="@+id/profile"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="88dp"
     android:paddingTop="16dp"
     android:paddingBottom="20dp">
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:textAlignment="center"
+        android:textSize="35sp"
+        android:textColor="#000000"
+        android:text="Empty"/>
 
     <ImageView
         android:contentDescription="@string/avatar"
@@ -54,6 +64,6 @@
         android:layout_marginEnd="16dp"
         android:background="#00ffffff"
         android:tint="#ff0000"
-        android:src="@drawable/ic_error_outline_black_16dp"/>
+        android:src="@drawable/ic_error_outline_grey_16dp"/>
 
 </RelativeLayout>

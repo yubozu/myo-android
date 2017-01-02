@@ -17,7 +17,9 @@ import java.util.Comparator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.ac.ict.myo.model.DeviceModel;
+import cn.ac.ict.myo.activity.EditActivity;
+import cn.ac.ict.myo.activity.ProfileActivity;
+import cn.ac.ict.myo.model.PatientModel;
 
 /**
  * Author: saukymo
@@ -25,12 +27,14 @@ import cn.ac.ict.myo.model.DeviceModel;
  */
 
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder>{
-    private ArrayList<DeviceModel> mDataset;
+    private ArrayList<PatientModel> mDataset;
     private View.OnClickListener mListener;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.rl)
-        public RelativeLayout rl;
+        @BindView(R.id.profile)
+        public RelativeLayout profile;
+        @BindView(R.id.tv_empty)
+        public TextView empty;
         @BindView(R.id.civ_gender)
         public ImageView gender;
         @BindView(R.id.tv_name)
@@ -40,16 +44,35 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         @BindView(R.id.tv_last_outbreak)
         public TextView lastOutbreak;
         @BindView(R.id.bt_view)
-        public ImageView view;
+        public ImageView viewed;
 
         public ViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
         }
+
+        public void setVisible(Boolean status) {
+            if (status) {
+                empty.setVisibility(View.GONE);
+                gender.setVisibility(View.VISIBLE);
+                name.setVisibility(View.VISIBLE);
+                room.setVisibility(View.VISIBLE);
+                lastOutbreak.setVisibility(View.VISIBLE);
+                viewed.setVisibility(View.VISIBLE);
+            } else {
+                empty.setVisibility(View.VISIBLE);
+                gender.setVisibility(View.GONE);
+                name.setVisibility(View.GONE);
+                room.setVisibility(View.GONE);
+                lastOutbreak.setVisibility(View.GONE);
+                viewed.setVisibility(View.GONE);
+            }
+
+        }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public DeviceAdapter(ArrayList<DeviceModel> myDataset) {
+    public DeviceAdapter(ArrayList<PatientModel> myDataset) {
         mDataset = myDataset;
         sortDataset();
     }
@@ -70,34 +93,55 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        final DeviceModel device = mDataset.get(position);
-        holder.name.setText(device.name);
-        holder.rl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MyoApp.getAppContext(), PatientDetail.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("device_id", device.getDeviceId()); //Your id
-                intent.putExtras(bundle); //Put your id to your next Intent
-                MyoApp.getAppContext().startActivity(intent);
-            }
-        });
-
-        if (device.getGender() != null && device.getGender().equals("男")) {
-            holder.gender.setImageResource(R.drawable.male);
+        final PatientModel device = mDataset.get(position);
+        if (device.getName().equals("")) {
+            holder.setVisible(false);
+            holder.empty.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    device.setViewed(false);
+                    Intent intent = new Intent(MyoApp.getAppContext(), EditActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("device_id", device.getDeviceId()); //Your id
+                    intent.putExtras(bundle); //Put your id to your next Intent
+                    MyoApp.getAppContext().startActivity(intent);
+                }
+            });
         } else {
-            holder.gender.setImageResource(R.drawable.female);
+            holder.setVisible(true);
+            holder.name.setText(device.name);
+            holder.profile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    device.setViewed(false);
+                    Intent intent = new Intent(MyoApp.getAppContext(), ProfileActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("device_id", device.getDeviceId()); //Your id
+                    intent.putExtras(bundle); //Put your id to your next Intent
+                    MyoApp.getAppContext().startActivity(intent);
+                }
+            });
+
+            if (device.getGender() != null && device.getGender().equals("男")) {
+                holder.gender.setImageResource(R.drawable.male);
+            } else {
+                holder.gender.setImageResource(R.drawable.female);
+            }
+
+            if (device.getViewed()) {
+                holder.viewed.setVisibility(View.VISIBLE);
+            } else {
+                holder.viewed.setVisibility(View.GONE);
+            }
+
+            holder.room.setText("病房301-" + device.getDeviceId());
+            holder.lastOutbreak.setText("上次发作时间：30分钟前");
         }
-
-        holder.room.setText("病房301-" + device.getDeviceId());
-        holder.lastOutbreak.setText("上次发作时间：30分钟前");
-//        holder.view.setOnClickListener();
-
     }
     private void sortDataset() {
-        Collections.sort(mDataset, new Comparator<DeviceModel>() {
+        Collections.sort(mDataset, new Comparator<PatientModel>() {
             @Override
-            public int compare(DeviceModel device1, DeviceModel device2)
+            public int compare(PatientModel device1, PatientModel device2)
             {
 
                 return  device1.deviceId.compareTo(device2.deviceId);
@@ -106,13 +150,15 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     }
     public void setAlert(Integer deviceId, Boolean status) {
         sortDataset();
-        for (DeviceModel device: mDataset) {
+        for (PatientModel device: mDataset) {
             if (device.deviceId.equals(deviceId)) {
                 device.setStatus(status);
+                if (status) device.setViewed(true);
             }
             if (device.getStatus() != null && device.getStatus()) {
                 mDataset.remove(device);
                 mDataset.add(0, device);
+                break;
             }
         }
         Log.d("Adapter", mDataset.toString());

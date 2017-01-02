@@ -8,36 +8,52 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <EditText
-        android:id="@+id/et_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:textColor="@drawable/edit_text_selector"
-        android:hint="姓名"/>
 
-    <EditText
-        android:id="@+id/et_gender"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:textColor="@drawable/edit_text_selector"
-        android:hint="性别"/>
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/et_age"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:textColor="@drawable/edit_text_selector"
-        android:hint="年龄"/>
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Name"
+            android:textSize="21sp"
+            android:textColor="#000000" />
 
-    <EditText
-        android:id="@+id/et_id"
+        <ImageView
+            android:contentDescription="@string/avatar"
+            android:id="@+id/civ_gender"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/female"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@drawable/edit_text_selector"
-        android:hint="住院编号"/>
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Age:"
+            style="@style/CustomTextViewStyle" />
+
+        <TextView
+            android:id="@+id/tv_age"
+            style="@style/CustomTextViewStyle"
+            android:text="50"/>
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            style="@style/CustomTextViewStyle"
+            android:text="#:" />
+
+        <TextView
+            android:id="@+id/tv_id"
+            style="@style/CustomTextViewStyle"
+            android:text="504345"/>
+    </LinearLayout>
 
     <EditText
         android:id="@+id/et_info"

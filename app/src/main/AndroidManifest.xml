@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity"
             android:windowNoTitle="true"
-            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleInstance"
             android:windowFullscreen="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,12 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PatientDetail"
+        <activity android:name=".activity.ProfileActivity"
             android:windowNoTitle="true"
             android:windowFullscreen="true"
             android:windowSoftInputMode="stateAlwaysHidden">
 
         </activity>
+        <activity android:name=".activity.EditActivity"
+            android:windowNoTitle="true"
+            android:windowFullscreen="true"
+            android:windowSoftInputMode="adjustPan"
+            />
     </application>
 
 </manifest>
