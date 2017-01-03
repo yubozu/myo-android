@@ -1,11 +1,13 @@
 package cn.ac.ict.myo.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.ac.ict.myo.MyoApp;
 import cn.ac.ict.myo.R;
 import cn.ac.ict.myo.model.PatientModel;
 import cn.ac.ict.myo.presenter.ProfilePresenter;
@@ -44,13 +46,14 @@ public class EditActivity extends BaseActivity{
                 patientModel.setName(name.getText().toString());
                 patientModel.setAge(age.getText().toString());
                 patientModel.setGender(gender.getText().toString());
-                patientModel.setId(gender.getText().toString());
-                patientModel.setInfo(gender.getText().toString());
+                patientModel.setId(id.getText().toString());
+                patientModel.setInfo(info.getText().toString());
                 patientModel.saveToPref();
                 break;
             case R.id.cancel:
                 break;
         }
+        finish();
     }
 
     @Override
@@ -58,6 +61,12 @@ public class EditActivity extends BaseActivity{
         Bundle bundle = getIntent().getExtras();
         deviceId = bundle.getInt("device_id");
 
+        PatientModel patientModel = PatientModel.getPatientModel(deviceId);
+        name.setText(patientModel.getName());
+        age.setText(patientModel.getAge());
+        gender.setText(patientModel.getGender());
+        id.setText(patientModel.getId());
+        info.setText(patientModel.getInfo());
         profilePresenter = new ProfilePresenter(this);
     }
 }

@@ -1,7 +1,10 @@
 package cn.ac.ict.myo.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +19,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import cn.ac.ict.myo.MyoApp;
 import cn.ac.ict.myo.R;
 import cn.ac.ict.myo.model.PatientModel;
 
@@ -40,6 +45,11 @@ public class ProfileActivity extends BaseActivity {
     public LineChart Chart;
     @BindView(R.id.tv_prob)
     public TextView Prob;
+    @BindView(R.id.delete)
+    public Button delete;
+    @BindView(R.id.edit)
+    public Button edit;
+
     private Integer index = 0;
     public static final int[] CHART_COLORS = {
             rgb("#fff7fb"), rgb("#ece7f2"), rgb("#d0d1e6"), rgb("#a6bddb"),
@@ -57,6 +67,21 @@ public class ProfileActivity extends BaseActivity {
     @Override
     public int getLayoutRes() {
         return R.layout.activity_profile;
+    }
+
+    @OnClick({R.id.edit, R.id.delete})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.delete:
+                break;
+            case R.id.edit:
+                Intent intent = new Intent(MyoApp.getAppContext(), EditActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("device_id", deviceId); //Your id
+                intent.putExtras(bundle); //Put your id to your next Intent
+                MyoApp.getAppContext().startActivity(intent);
+                break;
+        }
     }
 
     @Override

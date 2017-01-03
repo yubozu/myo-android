@@ -36,23 +36,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="Age:"
+            android:text="年龄:"
             style="@style/CustomTextViewStyle" />
 
         <TextView
             android:id="@+id/tv_age"
-            style="@style/CustomTextViewStyle"
-            android:text="50"/>
+            style="@style/CustomTextViewStyle" />
 
         <TextView
             android:layout_marginLeft="20dp"
             style="@style/CustomTextViewStyle"
-            android:text="#:" />
+            android:text="住院编号:" />
 
         <TextView
             android:id="@+id/tv_id"
-            style="@style/CustomTextViewStyle"
-            android:text="504345"/>
+            style="@style/CustomTextViewStyle"/>
     </LinearLayout>
 
     <EditText
