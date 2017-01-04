@@ -1,48 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="16dp"
     android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/et_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"/>
+        android:hint="姓名"/>
 
     <EditText
         android:id="@+id/et_age"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Age"/>
+        android:hint="年龄"/>
 
     <EditText
         android:id="@+id/et_gender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Gender"/>
+        android:hint="性别"/>
 
     <EditText
         android:id="@+id/et_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Id"/>
+        android:hint="住院编号"/>
 
     <EditText
         android:id="@+id/et_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Info"/>
+        android:lines="6"
+        android:gravity="start"
+        android:hint="诊断信息"/>
 
     <Button
         android:id="@+id/save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save"/>
+        android:text="保存"/>
 
     <Button
         android:id="@+id/cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="cancel"/>
+        android:text="取消"/>
 
 </LinearLayout>

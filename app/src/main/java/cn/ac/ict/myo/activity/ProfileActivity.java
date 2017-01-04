@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.ac.ict.myo.MyoApp;
 import cn.ac.ict.myo.R;
+import cn.ac.ict.myo.model.HistoryModel;
 import cn.ac.ict.myo.model.PatientModel;
 
 /**
@@ -32,6 +33,7 @@ import cn.ac.ict.myo.model.PatientModel;
 public class ProfileActivity extends BaseActivity {
     public final static String TAG = "ProfileActivity";
     private Integer deviceId;
+    private PatientModel patient;
 
     @BindView(R.id.tv_name)
     public TextView name;
@@ -49,6 +51,10 @@ public class ProfileActivity extends BaseActivity {
     public Button delete;
     @BindView(R.id.edit)
     public Button edit;
+    @BindView(R.id.history)
+    public TextView history;
+    @BindView(R.id.info)
+    public TextView info;
 
     private Integer index = 0;
     public static final int[] CHART_COLORS = {
@@ -88,17 +94,18 @@ public class ProfileActivity extends BaseActivity {
     protected void init() {
         Bundle bundle = getIntent().getExtras();
         deviceId = bundle.getInt("device_id");
-
-        PatientModel device = PatientModel.getPatientModel(deviceId);
-        name.setText(device.getName());
-        age.setText(device.getAge());
-        id.setText(device.getId());
-        if (device.getGender() != null && device.getGender().equals("男")) {
+        patient = PatientModel.getPatientModel(deviceId);
+        name.setText(patient.getName());
+        age.setText(patient.getAge());
+        id.setText(patient.getId());
+        info.setText(patient.getInfo());
+        if (patient.getGender() != null && patient.getGender().equals("男")) {
             gender.setImageResource(R.drawable.male);
         } else {
             gender.setImageResource(R.drawable.female);
         }
 
+        loadAlertHistory();
         subscribe(deviceId);
 
         for (int i = 0; i < 8; i++) {
@@ -118,9 +125,28 @@ public class ProfileActivity extends BaseActivity {
         }
     }
 
+    private void loadAlertHistory() {
+        HistoryModel historyModel = HistoryModel.getHistoryModel(patient.getUuid());
+        history.setText(historyModel.toString());
+    }
+
+    @Override
+    public void onAlert(Integer deviceId, Boolean status) {
+        super.onAlert(deviceId, status);
+        if (deviceId.equals(this.deviceId)) {
+            loadAlertHistory();
+        }
+    }
+
+    private String getDegree(Double probability) {
+        if (probability > 0.9) return "High";
+        else if (probability > 0.6) return "Medium";
+        else return "Low";
+    }
+
     @Override
     public void onEmg(Double probability, ArrayList<Integer> emg) {
-        Prob.setText(String.valueOf(probability));
+        Prob.setText("实时概率: " + String.valueOf(probability) + "\t\t\t\t\t\t发作指数: " + getDegree(probability));
         LineData dataSet = Chart.getData();
         if (dataSet == null)
             return;

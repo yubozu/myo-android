@@ -19,6 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ac.ict.myo.activity.EditActivity;
 import cn.ac.ict.myo.activity.ProfileActivity;
+import cn.ac.ict.myo.model.HistoryModel;
 import cn.ac.ict.myo.model.PatientModel;
 
 /**
@@ -135,7 +136,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
             }
 
             holder.room.setText("病房301-" + device.getDeviceId());
-            holder.lastOutbreak.setText("上次发作时间：30分钟前");
+            holder.lastOutbreak.setText("上次发作时间：" + HistoryModel.getHistoryModel(device.getUuid()).getLastOutbreak());
         }
     }
     private void sortDataset() {

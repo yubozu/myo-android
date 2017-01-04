@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import cn.ac.ict.myo.activity.BaseActivity;
+import cn.ac.ict.myo.model.HistoryModel;
 import cn.ac.ict.myo.model.PatientModel;
 
 /**
@@ -105,11 +106,24 @@ public class SocketPresenter {
                     }
                     baseActivity.onAlert(deviceId, status);
 //                    Log.d(TAG, "Socket connected " + mSocket.connected());
+
+                    saveAlert(deviceId, status);
                 }
             });
         }
     };
 
+    private void saveAlert(Integer deviceId, Boolean status) {
+        PatientModel patientModel = PatientModel.getPatientModel(deviceId);
+        HistoryModel historyModel = HistoryModel.getHistoryModel(patientModel.getUuid());
+        if (status) {
+            historyModel.start();
+        } else {
+            historyModel.stop();
+        }
+        historyModel.save();
+        Log.d(TAG, historyModel.toJson());
+    }
     private Emitter.Listener onDeviceUpdate = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {

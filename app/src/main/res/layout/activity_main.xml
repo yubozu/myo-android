@@ -4,24 +4,25 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#efefef"
+
     android:orientation="vertical"
     tools:context="cn.ac.ict.myo.activity.MainActivity">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:layout_height="64dp"
+        android:textStyle="bold"
+        android:background="#282828"
         android:textAlignment="center"
-        android:text="Patient List"/>
+        android:gravity="center"
+        android:textColor="#fff"
+        android:text="可穿戴数字化癫痫预警系统"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rc_view"
-        android:layout_weight="0.5"
         android:scrollbars="none"
+        android:background="#fff"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

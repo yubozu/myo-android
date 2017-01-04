@@ -53,18 +53,17 @@
             style="@style/CustomTextViewStyle"/>
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/et_info"
+    <TextView
+        android:id="@+id/info"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lines="4"
-        android:maxLines="4"
-        android:textColor="@drawable/edit_text_selector"
+        android:textColor="#282828"
+        android:lines="6"
         android:gravity="start"
         android:overScrollMode="ifContentScrolls"
         android:scrollbars="vertical"
-        android:scrollbarStyle="insideInset"
-        android:hint="请输入患者的诊断信息" />
+        android:scrollbarStyle="insideInset" />
 
     </LinearLayout>
 </FrameLayout>
